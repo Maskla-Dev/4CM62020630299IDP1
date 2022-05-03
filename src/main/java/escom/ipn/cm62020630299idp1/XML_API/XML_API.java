@@ -56,6 +56,8 @@ public class XML_API {
         }
     }
 
+    //Extrae del archivo XML la lista de usuarios, las convierte en objetos con 
+    //sus respetivos cuestionarios y preguntas para una mejor manipulacion.
     private void initUserList() {
         List<Element> users = this.root.getChildren();
         this.users_list = new ArrayList<User>();
@@ -106,9 +108,9 @@ public class XML_API {
         }
     }
 
-    public boolean signIn(String nickname, String password) {
+    private boolean signIn(String nickname, String password) {
         System.out.println("SignIn user...");
-        if (searchUser(nickname) != -1)
+        if (searchUser(nickname) != -1 && !nickname.isEmpty())
         {
             return false;
         } else
@@ -138,7 +140,14 @@ public class XML_API {
         System.out.println(nickname + " does not exist");
         return -1;
     }
-
+    public boolean removeUser(String nickname){
+        int user_index = searchUser(nickname);
+        if(user_index == -1)
+            return false;
+        else
+            users_list.remove(user_index);
+        return true;
+    }
     public boolean updateXML() {
         try
         {
@@ -190,14 +199,14 @@ public class XML_API {
         return loggedUserIndex != -1 ? users_list.get(loggedUserIndex) : null;
     }
     //XML File streams
-    private File file;
-    private SAXBuilder builder;
-    private Element root;
-    private Document xml_document;
-    private FileOutputStream out_file_stream;
-    private XMLOutputter xml_output;
-    private FileInputStream in_file_stream;
+    private File file;  //Archivo en disco XML
+    private SAXBuilder builder; //Constructor de archivo XML
+    private Element root;   //Representa la etiqueta raiz del archivo XML como objeto
+    private Document xml_document; //Representa el archivo XML como objeto
+    private FileOutputStream out_file_stream;   //Objeto con instrucciones de escritura de archivo
+    private XMLOutputter xml_output;    //Directivas de escritura de archivo XML
+    private FileInputStream in_file_stream; //Objeto con instrucciones de lectura de arhivo
     //Functional members
-    private List<User> users_list;
-    private int loggedUserIndex;
+    private List<User> users_list;  //Representa la etiqueta de usuarios como objeto
+    private int loggedUserIndex;    //Indica la posicion en el catalogo de usuarios aquel que se ha loggeado
 }

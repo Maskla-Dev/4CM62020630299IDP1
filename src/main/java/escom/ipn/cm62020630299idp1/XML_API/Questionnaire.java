@@ -57,7 +57,6 @@ public class Questionnaire {
     public void addQuestion(int answer_index, String text, ArrayList<Answer> options) {
         this.questions.add(new Question(String.valueOf(this.questions.size()), answer_index, text, options));
     }
-
     public int searchQuestionById(String id) {
         for (int i = 0; i < questions.size(); ++i) {
             if (questions.get(i).getId().equals(id)) {

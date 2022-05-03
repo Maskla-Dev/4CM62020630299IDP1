@@ -22,15 +22,15 @@ public class Question {
     }
 
     Question(String id, int answer_index, String text, ArrayList<Answer> options) {
+        this.id = id;
+        this.text = text;
+        if (options != null) {
+            this.options = options;
+        } else {
+            initEmptyOptionsList();
+        }
         if (answer_index < options.size() && answer_index >= 0) {
-            this.id = id;
             this.answer_index = answer_index;
-            this.text = text;
-            if (options != null) {
-                this.options = options;
-            } else {
-                initEmptyOptionsList();
-            }
         } else {
             System.out.println("Error initializing question: answer cannot be greater than option size or negative integer");
         }
@@ -119,10 +119,12 @@ public class Question {
         }
         return -1;
     }
-    public boolean removeOption(String id){
+
+    public boolean removeOption(String id) {
         return removeOption(searchOptionById(id));
     }
-    public boolean removeOption(int pos){
+
+    public boolean removeOption(int pos) {
         if (pos >= 0 && pos < options.size()) {
             options.remove(pos);
             updateOptionsId(pos);
@@ -130,13 +132,15 @@ public class Question {
         }
         return false;
     }
-    private void updateOptionsId(int start){
+
+    private void updateOptionsId(int start) {
         if (start > 0 && start < options.size()) {
             for (int i = start; i < options.size(); ++i) {
                 options.get(i).setId(String.valueOf(i));
             }
         }
     }
+
     public Element getXMLTag() {
         Element question_tag = new Element("Pregunta");
         question_tag.setAttribute("id", id);

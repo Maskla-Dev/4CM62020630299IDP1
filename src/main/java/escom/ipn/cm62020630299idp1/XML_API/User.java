@@ -93,7 +93,6 @@ public class User {
     public void addQuestionnaire(String title, ArrayList<Question> questions) {
         questionnaires.add(new Questionnaire(String.valueOf(questionnaires.size()), title, questions));
     }
-
     public int searchQuestionnaireByTitle(String title) {
         for (int i = 0; i < questionnaires.size(); ++i)
         {
