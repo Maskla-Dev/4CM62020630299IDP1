@@ -111,4 +111,5 @@ Cierra la sesion del usuario, regresa `true` si habia un usuario en sesion, `fal
 Regresa el objeto de aquel usuario que inicio sesion, en caso de no existir sesion activa regresa `null`
 #### `boolean updateXML()`
 Actualiza los cambios realizados, los datos en las listas las sobrescribe en el archivo XML
-####
+#### `boolean removeUser(String nickname)`
+Quita de la lista el usuario especificado por el nickname, regresa `true` si el usuario existe y se removio, `false` en caso de que no exista
