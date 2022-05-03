@@ -14,28 +14,34 @@ import org.jdom2.*;
  */
 public class Question {
 
-    Question(String text) {
+    Question(String id, String text) {
         initEmptyOptionsList();
         this.answer_index = -1;
         this.text = text;
+        this.id = id;
     }
 
-    Question(int answer_index, String text, ArrayList<Answer> options) {
-        if (answer_index < options.size() && answer_index >= 0)
-        {
+    Question(String id, int answer_index, String text, ArrayList<Answer> options) {
+        if (answer_index < options.size() && answer_index >= 0) {
+            this.id = id;
             this.answer_index = answer_index;
             this.text = text;
-            if (options != null)
-            {
+            if (options != null) {
                 this.options = options;
-            } else
-            {
+            } else {
                 initEmptyOptionsList();
             }
-        } else
-        {
+        } else {
             System.out.println("Error initializing question: answer cannot be greater than option size or negative integer");
         }
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     private void initEmptyOptionsList() {
@@ -43,24 +49,21 @@ public class Question {
     }
 
     public Answer getOption(int index) {
-        if (index >= 0)
-        {
+        if (index >= 0) {
             return options.get(index);
-        } else
-        {
+        } else {
             return null;
         }
     }
 
     public void setOption(int index, Answer option) {
-        if (index >= 0)
-        {
+        if (index >= 0) {
             options.set(index, option);
         }
     }
 
     public void addOption(String text_content) {
-        options.add(new Answer(text_content));
+        options.add(new Answer(String.valueOf(options.size()), text_content));
     }
 
     public String getAnswer() {
@@ -72,8 +75,7 @@ public class Question {
     }
 
     public void changeAnswerIndex(int answer_index) {
-        if (answer_index >= 0 && answer_index < this.options.size())
-        {
+        if (answer_index >= 0 && answer_index < this.options.size()) {
             this.answer_index = answer_index;
         }
     }
@@ -87,12 +89,10 @@ public class Question {
     }
 
     public boolean setOptions(int answer_index, ArrayList<Answer> options) {
-        if (this.answer_index > 0 && this.answer_index < options.size())
-        {
+        if (this.answer_index > 0 && this.answer_index < options.size()) {
             this.answer_index = answer_index;
             return true;
-        } else
-        {
+        } else {
             System.out.println("Cannot change options");
             return false;
         }
@@ -102,20 +102,55 @@ public class Question {
         return options;
     }
 
+    public int searchOptionById(String id) {
+        for (int i = 0; i < options.size(); ++i) {
+            if (options.get(i).getId().equals(id)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int searchOptionByContent(String content) {
+        for (int i = 0; i < options.size(); ++i) {
+            if (options.get(i).getTextContent().equals(content)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public boolean removeOption(String id){
+        return removeOption(searchOptionById(id));
+    }
+    public boolean removeOption(int pos){
+        if (pos >= 0 && pos < options.size()) {
+            options.remove(pos);
+            updateOptionsId(pos);
+            return true;
+        }
+        return false;
+    }
+    private void updateOptionsId(int start){
+        if (start > 0 && start < options.size()) {
+            for (int i = start; i < options.size(); ++i) {
+                options.get(i).setId(String.valueOf(i));
+            }
+        }
+    }
     public Element getXMLTag() {
         Element question_tag = new Element("Pregunta");
+        question_tag.setAttribute("id", id);
         question_tag.setAttribute("texto", text);
-        if (answer_index != -1)
-        {
+        if (answer_index != -1) {
             question_tag.setAttribute("respuesta", Integer.toString(answer_index));
         }
-        for (Answer option : options)
-        {
+        for (Answer option : options) {
             question_tag.addContent(option.getXMLTag());
         }
         return question_tag;
     }
     private int answer_index;
     private String text;
+    private String id;
     private List<Answer> options;
 }

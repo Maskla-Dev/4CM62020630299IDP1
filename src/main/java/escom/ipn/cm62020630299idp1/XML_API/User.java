@@ -87,11 +87,11 @@ public class User {
     }
 
     public void addQuestionnaire(String title) {
-        questionnaires.add(new Questionnaire(title));
+        questionnaires.add(new Questionnaire(String.valueOf(questionnaires.size()), title));
     }
 
     public void addQuestionnaire(String title, ArrayList<Question> questions) {
-        questionnaires.add(new Questionnaire(title, questions));
+        questionnaires.add(new Questionnaire(String.valueOf(questionnaires.size()), title, questions));
     }
 
     public int searchQuestionnaireByTitle(String title) {
@@ -104,7 +104,32 @@ public class User {
         }
         return -1;
     }
-
+    public int searchQuestionnaireById(String id){
+        for(int i = 0; i < questionnaires.size(); ++i){
+            if(questionnaires.get(i).getId().equals(id)){
+                return i;
+            }
+        }
+        return -1;
+    }
+    public boolean removeQuestionnaire(String id){
+        return removeQuestionnaire(searchQuestionnaireById(id));
+    }
+    public boolean removeQuestionnaire(int pos){
+        if(pos >= 0 && pos < this.questionnaires.size()){
+            this.questionnaires.remove(pos);
+            updateQuestionnairesId(pos);
+            return true;
+        }
+        return false;
+    }
+    private void updateQuestionnairesId(int start){
+        if(start<questionnaires.size()){
+            for(int i = start; i < questionnaires.size(); ++i){
+                questionnaires.get(i).setId(String.valueOf(i));
+            }
+        }
+    }
     public Element getXMLTag() {
         Element user_tag = new Element("user");
         user_tag.setAttribute("nickname", nickname);
