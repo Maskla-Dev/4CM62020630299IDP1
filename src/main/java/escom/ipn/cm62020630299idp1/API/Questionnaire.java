@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package escom.ipn.cm62020630299idp1.XML_API;
+package escom.ipn.cm62020630299idp1.API;
 
 import java.util.*;
 import org.jdom2.*;
@@ -102,7 +102,9 @@ public class Questionnaire {
             return null;
         }
     }
-
+    public List<Question> getQuestions(){
+        return this.questions;
+    }
     public Element getXMLTag() {
         Element questionnaire_tag = new Element("Cuestionario");
         questionnaire_tag.setAttribute("id", id);

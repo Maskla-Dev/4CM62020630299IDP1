@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package escom.ipn.cm62020630299idp1.XML_API;
+package escom.ipn.cm62020630299idp1.API;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,11 +23,12 @@ import org.jdom2.output.XMLOutputter;
  */
 public class XML_API {
 
-    XML_API(String server_path, String xml_file_name) {
+    public XML_API(String server_path, String xml_file_name) {
         try
         {
             //File initialization
-            this.file = new File(server_path + xml_file_name);
+            this.file_path = server_path + xml_file_name;
+            this.file = new File(file_path);            
             if (!this.file.exists())
             {
                 System.out.println("Creating file...");
@@ -108,7 +109,7 @@ public class XML_API {
         }
     }
 
-    private boolean signIn(String nickname, String password) {
+    public boolean signIn(String nickname, String password) {
         System.out.println("SignIn user...");
         if (searchUser(nickname) != -1 && !nickname.isEmpty())
         {
@@ -122,6 +123,7 @@ public class XML_API {
             {
                 System.out.println("Error adding user: " + e.getMessage());
                 e.printStackTrace();
+                return false;
             }
             return true;
         }
@@ -152,7 +154,7 @@ public class XML_API {
         try
         {
             System.out.println("Updating xml file...");
-            this.file = new File("DataBase.xml");
+            this.file = new File(this.file_path);
             this.out_file_stream = new FileOutputStream(this.file);
             this.xml_output = new XMLOutputter(Format.getPrettyFormat());
             root = new Element("DataBase");
@@ -199,6 +201,7 @@ public class XML_API {
         return loggedUserIndex != -1 ? users_list.get(loggedUserIndex) : null;
     }
     //XML File streams
+    private String file_path;
     private File file;  //Archivo en disco XML
     private SAXBuilder builder; //Constructor de archivo XML
     private Element root;   //Representa la etiqueta raiz del archivo XML como objeto

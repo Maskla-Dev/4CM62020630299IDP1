@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package escom.ipn.cm62020630299idp1.XML_API;
+package escom.ipn.cm62020630299idp1.API;
 
 import org.jdom2.*;
 
